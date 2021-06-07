@@ -16,7 +16,7 @@ RUN conda install --quiet --yes \
     ## No reason why it fails, works on local docker
     ## I think someone need to learn what OCI runtime standard means
   fix-permissions $CONDA_DIR && \
-  fix-permissions /home/$NB_USER
+  fix-permissions /home/jovyan
 
 RUN pip install --upgrade pip && \
     pip install --upgrade \
@@ -39,7 +39,7 @@ USER root
 RUN $CONDA_DIR/envs/python2/bin/python -m ipykernel install && \
 $CONDA_DIR/envs/python2/bin/kernda -o -y /usr/local/share/jupyter/kernels/python2/kernel.json
 
-USER $NB_USER
+USER jovyan
 
 # Change to root user to install things
 USER root
@@ -63,9 +63,9 @@ RUN unzip /opt/ijava-kernel.zip -d /opt/ijava-kernel && \
   rm /opt/ijava-kernel.zip
 
 RUN fix-permissions $CONDA_DIR && \
-    fix-permissions /home/$NB_USER
+    fix-permissions /home/jovyan
 
-USER $NB_USER
+USER jovyan
 
 RUN jupyter labextension update --all
 RUN jupyter lab build 
