@@ -1,10 +1,10 @@
-RUN chown -R jovyan /home/jovyan
-
 FROM jupyter/scipy-notebook:latest
 
 LABEL org.opencontainers.image.source="https://github.com/MaastrichtU-IDS/jupyterlab"
 
 ENV JUPYTER_ENABLE_LAB=yes
+
+RUN chown -R jovyan /home/jovyan
 
 RUN npm install --global yarn
 
