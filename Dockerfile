@@ -16,12 +16,12 @@ RUN conda install --quiet --yes \
     ## No reason why it fails, works on local docker
     ## I think someone need to learn what OCI runtime standard means
   fix-permissions $CONDA_DIR && \
-  fix-permissions /home/jovyan
+  fix-permissions /home/$NB_USER
 
 RUN pip install --upgrade pip && \
     pip install --upgrade \
-      sparqlkernel
-      # jupyterlab jupyterlab-git
+      sparqlkernel 
+      # jupyterlab jupyterlab-git 
       ## https://github.com/jupyterlab/jupyterlab-git
       ## They have basic issues with versions not matching between the JS and python
 
@@ -39,13 +39,13 @@ USER root
 RUN $CONDA_DIR/envs/python2/bin/python -m ipykernel install && \
 $CONDA_DIR/envs/python2/bin/kernda -o -y /usr/local/share/jupyter/kernels/python2/kernel.json
 
-USER jovyan
+USER $NB_USER
 
 # Change to root user to install things
 USER root
 
 # # Install SPARQL kernel
-RUN jupyter sparqlkernel install
+RUN jupyter sparqlkernel install 
 
 # Install Java
 RUN apt-get update && \
@@ -63,11 +63,11 @@ RUN unzip /opt/ijava-kernel.zip -d /opt/ijava-kernel && \
   rm /opt/ijava-kernel.zip
 
 RUN fix-permissions $CONDA_DIR && \
-    fix-permissions /home/jovyan
+    fix-permissions /home/$NB_USER
 
 RUN chown -R jovyan /home/jovyan
 
-USER jovyan
+USER $NB_USER
 
 RUN jupyter labextension update --all
-RUN jupyter lab build 
+RUN jupyter lab build
