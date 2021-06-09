@@ -4,8 +4,6 @@ LABEL org.opencontainers.image.source="https://github.com/MaastrichtU-IDS/jupyte
 
 ENV JUPYTER_ENABLE_LAB=yes
 
-RUN chown -R jovyan /home/jovyan
-
 RUN npm install --global yarn
 
 # Install jupyterlab autocomplete extensions
@@ -22,8 +20,8 @@ RUN conda install --quiet --yes \
 
 RUN pip install --upgrade pip && \
     pip install --upgrade \
-      sparqlkernel 
-      # jupyterlab jupyterlab-git 
+      sparqlkernel
+      # jupyterlab jupyterlab-git
       ## https://github.com/jupyterlab/jupyterlab-git
       ## They have basic issues with versions not matching between the JS and python
 
@@ -47,7 +45,7 @@ USER jovyan
 USER root
 
 # # Install SPARQL kernel
-RUN jupyter sparqlkernel install 
+RUN jupyter sparqlkernel install
 
 # Install Java
 RUN apt-get update && \
@@ -66,6 +64,8 @@ RUN unzip /opt/ijava-kernel.zip -d /opt/ijava-kernel && \
 
 RUN fix-permissions $CONDA_DIR && \
     fix-permissions /home/jovyan
+
+RUN chown -R jovyan /home/jovyan
 
 USER jovyan
 
